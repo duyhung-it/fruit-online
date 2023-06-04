@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:fragment="san-pham">
+    <div class="row">
+        <div class="col-sm-3">
+            <nav class="navbar navbar-light topnav-menu">
+                <div class="active" id="topnav-menu-content">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a
+                                    class="nav-link"
+                                    data-bs-toggle="collapse"
+                                    href="#collapseExample"
+                                    role="button"
+                                    aria-expanded="false"
+                                    aria-controls="collapseExample"
+                            >
+                                <i class="uil-search mr-1"></i>Tìm kiếm danh mục
+                                <div class="arrow-down"></div>
+                            </a>
+                            <div class="collapse" id="collapseExample">
+                                <a
+                                        href="javascript: void(0);"
+                                        class="dropdown-item"
+                                >Tất cả
+                                </a>
+
+                                <a th:each="category: ${listCategories}" class="dropdown-item" th:href="@{san-pham(category_id=${category.id})}" th:text="${category.name}"></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="col-sm-9">
+            <div class="row">
+                <div th:each="product : ${list}" th:object="${product}"
+                     class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box card">
+                        <a th:href="@{/san-pham/chi-tiet(id=*{id})}">
+                            <div class="img-box">
+                                <img
+                                        th:src="@{'/image/' + *{image}}"
+                                        alt=""
+                                />
+                            </div>
+                            <div class="detail-box">
+                                <h6 th:text="*{name}"></h6>
+                                <h6>
+                                    <span th:text="*{#numbers.formatCurrency(price)}"></span>
+                                </h6>
+                            </div>
+                        </a>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+            <nav aria-label="...">
+                <ul class="pagination mb-0 justify-content-center align-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li th:each="i : ${#numbers.sequence(1,totalPages)}" class="page-item">
+                        <a class="page-link" th:href="@{/san-pham(page=${i},categoryId=${categoryId})}" th:text="${i}"></a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

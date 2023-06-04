@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:fragment="chi-tiet-hoa-don">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+
+        <h4 class="page-title">Đơn mua</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row justify-content-center">
+    <div class="col-lg-7 col-md-10 col-sm-11">
+
+      <div class="horizontal-steps mt-4 mb-4 pb-5">
+        <div class="horizontal-steps-content">
+          <div class="step-item">
+            <span data-toggle="tooltip" data-placement="bottom" title="" data-original-title="20/08/2018 07:24 PM" aria-describedby="tooltip680955">Order Placed</span>
+          </div>
+          <div class="step-item" th:classappend="${order.status == '1' ? 'current' : ''}">
+            <span data-toggle="tooltip" data-placement="bottom" title="" data-original-title="21/08/2018 11:32 AM">Đang chờ</span>
+          </div>
+          <div class="step-item" th:classappend="${order.status == '2' ? 'current' : ''}">
+            <span>Đang giao hàng</span>
+          </div>
+          <div class="step-item" th:classappend="${order.status == '3' ? 'current' : ''}">
+            <span>Đã nhận</span>
+          </div>
+        </div>
+
+        <div class="process-line" style="width: 33%;"></div>
+      </div>
+    </div>
+  </div>
+  <!-- end row -->
+
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="header-title mb-3">Items from Order #[[${order.id}]]</h4>
+
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead class="thead-light">
+              <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Thành tiền</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="orderDetail : ${order.orderDetails}" th:object="${orderDetail}">
+                <td>
+                  <img th:src="@{'/image/' + *{id.product.image}}" alt="contact-img" title="contact-img" class="rounded mr-3" height="48">
+                  <p class="m-0 d-inline-block align-middle font-16">
+                    <span class="text-body" th:text="*{id.product.name}">Adirondack Chair</span>
+                  </p>
+                </td>
+                <td th:text="*{quantity}">3</td>
+                <td th:text="*{#numbers.formatCurrency(price)}">$128</td>
+                <td th:text="*{#numbers.formatCurrency(quantity * price)}">$384</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- end table-responsive -->
+
+        </div>
+      </div>
+    </div> <!-- end col -->
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="header-title mb-3">Order Summary</h4>
+
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead class="thead-light">
+              <tr>
+                <th>Description</th>
+                <th>Price</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>Grand Total :</td>
+                <td th:text="${#numbers.formatCurrency(order.totalPrice)}">$1641</td>
+              </tr>
+              <tr>
+                <td>Shipping Charge :</td>
+                <td th:text="${#numbers.formatCurrency(0)}"></td>
+              </tr>
+              <tr>
+                <td>Estimated Tax : </td>
+                <td th:text="${#numbers.formatCurrency(0)}">$19.22</td>
+              </tr>
+              <tr>
+                <th>Total :</th>
+                <th th:text="${#numbers.formatCurrency(order.totalPrice)}">$1683.22</th>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- end table-responsive -->
+        </div>
+      </div>
+    </div> <!-- end col -->
+  </div>
+  <!-- end row -->
+
+
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="header-title mb-3">Shipping Information</h4>
+
+          <h5 th:text="${user.name}">Stanley Jones</h5>
+
+          <address class="mb-0 font-14 address-lg" >
+            <p th:text="${user.address}"></p>
+            <p><abbr title="Phone">P:</abbr> <span th:text="${user.phone}"></span></p>
+            <p><abbr title="Email">M:</abbr> <span th:text="${user.email}"></span></p>
+          </address>
+        </div>
+      </div>
+    </div> <!-- end col -->
+
+    <!-- end col -->
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="header-title mb-3">Delivery Info</h4>
+
+          <div class="text-center">
+            <i class="mdi mdi-truck-fast h2 text-muted"></i>
+            <h5><b>UPS Delivery</b></h5>
+            <p class="mb-1"><b>Order ID :</b> <span th:text="${order.id}"></span></p>
+            <p class="mb-0"><b>Payment Mode :</b> COD</p>
+          </div>
+        </div>
+      </div>
+    </div> <!-- end col -->
+  </div>
+  <!-- end row -->
+
+</th:block>
+</body>
+</html>

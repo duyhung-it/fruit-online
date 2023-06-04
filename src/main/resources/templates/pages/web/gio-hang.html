@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <th:block th:fragment="gio-hang">
+    <div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+          <div class="page-title-right">
+            <a
+                    class="btn btn-danger"
+                    th:href="@{/hoa-don}"
+            ><i class="mdi mdi-history"></i> Đã mua</a
+            >
+          </div>
+          <h4 class="page-title">Giỏ hàng</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="table-responsive">
+                  <table class="table table-borderless table-centered mb-0">
+                    <thead class="thead-light">
+                    <tr>
+                      <th>Sản phẩm</th>
+                      <th>Giá</th>
+                      <th>Số lượng</th>
+                      <th>Tổng tiền</th>
+                      <th style="width: 50px"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="cart : ${list}">
+                      <form th:action="@{/gio-hang/update}" th:id="'form-cart-' + ${cart.id.product.code}" th:object="${cart}" method="post">
+
+                        <td>
+                          <img
+                                  th:src="@{'/image/' + *{id.product.image}}"
+                                  alt="contact-img"
+                                  title="contact-img"
+                                  class="rounded mr-3"
+                                  height="64"
+                          />
+                          <p class="m-0 d-inline-block align-middle font-16">
+                            <a
+                                    th:href="@{/san-pham/chi-tiet(id=*{id.product.id})}"
+                                    class="text-body"
+                                    th:text="*{id.product.name}"></a
+                            >
+                            <br />
+                            <small class="mr-2"><b>Size:</b> Large </small>
+                            <small><b>Color:</b> Light Green </small>
+                          </p>
+                        </td>
+                        <td th:text="*{id.product.price}">{{(p.price | currency) + ' VNĐ'}}</td>
+                        <td>
+                          <input
+                                  type="number"
+                                  min="1"
+                                  class="form-control"
+                                  placeholder="Qty"
+                                  style="width: 90px"
+                                  name="quantity"
+                                  th:value="*{quantity}"
+                                  th:id="'quantity-' + *{id.product.code}"
+                                  th:onchange="updateProductQuantity([[*{id.product.code}]])"
+                          />
+                          <input type="text" class="d-none" th:value="*{id.product.id}" name="id.product.id"></input>
+                          <input type="text" class="d-none" th:value="*{id.cart.id}" name="id.cart.id"></input>
+                        </td>
+                        <td th:text="*{#numbers.formatCurrency(quantity * id.product.price)}">{{(p.quantity * p.price | currency) + 'VNĐ'}}</td>
+                        <td>
+                          <a
+                                  th:href="@{/gio-hang/delete(productId=*{id.product.id},cartId=*{id.cart.id})}"
+                                  class="action-icon"
+                          >
+                            <i class="mdi mdi-delete"></i
+                            ></a>
+                        </td>
+                      </form>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- end table-responsive-->
+                <!-- action buttons-->
+                <div class="row mt-4">
+                  <div class="col-sm-6">
+                    <a
+                            th:href="@{/san-pham}"
+                            class="btn text-muted d-none d-sm-inline-block btn-link font-weight-semibold"
+                    >
+                      <i class="mdi mdi-arrow-left"></i> Continue Shopping
+                    </a>
+                  </div>
+                  <!-- end col -->
+                  <div class="col-sm-6">
+                    <div class="text-sm-right">
+                      <a
+                              th:href="@{/gio-hang/thanh-toan}"
+                              class="btn btn-danger"
+                      >
+                        <i class="mdi mdi-cart-plus mr-1"></i> Checkout
+                      </a>
+                    </div>
+                  </div>
+                  <!-- end col -->
+                </div>
+                <!-- end row-->
+              </div>
+              <!-- end col -->
+
+              <div class="col-lg-4">
+                <div class="border p-3 mt-4 mt-lg-0 rounded">
+                  <h4 class="header-title mb-3">Order Summary</h4>
+
+                  <div class="table-responsive">
+                    <table class="table mb-0">
+                      <tbody>
+                      <tr>
+                        <td>Grand Total :</td>
+                        <td th:text="${#numbers.formatCurrency(grandTotal)}">$1571.19</td>
+                      </tr>
+                      <tr>
+                        <td>Discount : </td>
+                        <td>-$0.0</td>
+                      </tr>
+                      <tr>
+                        <td>Shipping Charge :</td>
+                        <td>$0</td>
+                      </tr>
+                      <tr>
+                        <td>Estimated Tax : </td>
+                        <td>$0</td>
+                      </tr>
+                      <tr>
+                        <th>Total :</th>
+                        <th th:text="${#numbers.formatCurrency(grandTotal)}">$1458.3</th>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- end table-responsive -->
+                </div>
+              </div>
+              <!-- end col -->
+            </div>
+            <!-- end row -->
+          </div>
+          <!-- end card-body-->
+        </div>
+        <!-- end card-->
+      </div>
+      <!-- end col -->
+    </div>
+    <!-- end row -->
+  </th:block>
+</body>
+</html>

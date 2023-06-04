@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:fragment="hoa-don">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+
+                <h4 class="page-title">Đơn mua</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-lg-8">
+                            <form class="form-inline">
+                                <div class="form-group mb-2">
+                                    <label for="inputPassword2" class="sr-only">Search</label>
+                                    <input type="search" class="form-control" id="inputPassword2" placeholder="Search...">
+                                </div>
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <label for="status-select" class="mr-2">Status</label>
+                                    <select class="custom-select" id="status-select">
+                                        <option selected="">Choose...</option>
+                                        <option value="1">Đang chờ</option>
+                                        <option value="2">Đang giao hàng</option>
+                                        <option value="3">Đã giao hàng</option>
+                                        <option value="0">Đã hủy</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-centered mb-0">
+                            <thead class="thead-light">
+                            <tr>
+                                <th style="width: 20px;">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                        <label class="custom-control-label" for="customCheck1">&nbsp;</label>
+                                    </div>
+                                </th>
+                                <th>Sản phẩm</th>
+                                <th>Ngày</th>
+                                <th>Tổng</th>
+                                <th>Trạng thái</th>
+                                <th style="width: 125px;">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="order : ${list}" th:object="${order}">
+                                <td>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                        <label class="custom-control-label" for="customCheck2">&nbsp;</label>
+                                    </div>
+                                </td>
+                                <td th:object="${order.orderDetails.get(0)}">
+                                    <a th:href="@{/hoa-don/chi-tiet(id=${order.id})}">
+                                        <img th:src="@{'/image/' + *{id.product.image}}" alt="contact-img" title="contact-img" class="rounded mr-3" height="48">
+                                        <p class="m-0 d-inline-block align-middle font-16">
+                                            <span class="text-body" th:text="*{id.product.name}">Adirondack Chair</span>
+                                            <br>
+                                            <span class="text-body" th:text="*{quantity + 'x' + #numbers.formatCurrency(price)}"></span>
+                                        </p>
+                                        <br>
+                                        <small>
+                                            <span class="text-secondary font-weight-bold" th:if="${order.orderDetails.size() > 1}">Xem thêm sản phẩm</span>
+                                        </small>
+                                    </a>
+                                </td>
+                                <td th:text="*{createdDate}">
+                                    August 05 2018 <small class="text-muted">10:29 PM</small>
+                                </td>
+                                <td th:text="*{#numbers.formatCurrency(totalPrice)}">
+                                    $176.41
+                                </td>
+                                <td th:switch="*{status}">
+                                    <h5><span class="badge badge-info-lighten" th:case="1">Đang chờ</span></h5>
+                                    <h5><span class="badge badge-warning-lighten" th:case="2">Đang giao</span></h5>
+                                    <h5><span class="badge badge-success-lighten" th:case="3">Đã giao</span></h5>
+                                    <h5><span class="badge badge-danger-lighten" th:case="0">Đã hủy</span></h5>
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                    <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                    <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-7">
+            <div class="dataTables_paginate paging_simple_numbers"
+                 id="products-datatable_paginate">
+                <ul class="pagination pagination-rounded">
+                    <li class="paginate_button page-item previous"
+                        id="products-datatable_previous"><a href="#"
+                                                            aria-controls="products-datatable"
+                                                            data-dt-idx="0" tabindex="0"
+                                                            class="page-link"><i
+                            class="mdi mdi-chevron-left"></i></a></li>
+                    <li class="paginate_button page-item " th:each="i : ${#numbers.sequence(1,totalPages)}">
+                        <a class="page-link" th:href="@{/hoa-don(page=${i})}" th:text="${i}"></a>
+                    </li>
+                    <li class="paginate_button page-item next disabled"
+                        id="products-datatable_next"><a href="#"
+                                                        aria-controls="products-datatable"
+                                                        data-dt-idx="4" tabindex="0"
+                                                        class="page-link"><i
+                            class="mdi mdi-chevron-right"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+
+</th:block>
+</body>
+</html>

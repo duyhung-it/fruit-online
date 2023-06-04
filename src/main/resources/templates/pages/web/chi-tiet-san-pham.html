@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <th:block th:fragment="chi-tiet-san-pham">
+      <div class="row">
+          <div class="col-12">
+              <div class="page-title-box">
+                  <h4 class="page-title">Product Details</h4>
+              </div>
+          </div>
+      </div>
+      <!-- end page title -->
+
+      <div class="row">
+          <div class="col-12">
+              <div class="card">
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-lg-5">
+                              <!-- Product image -->
+                              <a href="#" class="text-center d-block mb-4">
+                                  <img
+                                          th:src="@{'/image/' + ${product.image}}"
+                                          class="img-fluid"
+                                          style="max-width: 280px"
+                                          alt="Product-img"
+                                  />
+                              </a>
+                          </div>
+                          <!-- end col -->
+                          <div class="col-lg-7">
+                              <form class="pl-lg-4" th:action="@{/gio-hang}" method="post" th:object="${cartDetails}">
+                                  <!-- Product title -->
+                                  <h3 class="mt-0">
+                                      <p th:text="${product.name}"></p>
+                                      <a href="" class="text-muted"
+                                      ><i class="mdi mdi-square-edit-outline ml-2"></i
+                                      ></a>
+                                  </h3>
+                                  <p class="mb-1" th:text="${product.createdDate}"></p>
+                                  <p class="font-16">
+                                      <span class="text-warning mdi mdi-star"></span>
+                                      <span class="text-warning mdi mdi-star"></span>
+                                      <span class="text-warning mdi mdi-star"></span>
+                                      <span class="text-warning mdi mdi-star"></span>
+                                      <span class="text-warning mdi mdi-star"></span>
+                                  </p>
+
+                                  <!-- Product stock -->
+                                  <div class="mt-3">
+                                      <h4>
+                                          <span class="badge badge-success-lighten">Hot</span>
+                                      </h4>
+                                  </div>
+
+                                  <!-- Product description -->
+                                  <div class="mt-4">
+                                      <h6 class="font-14">Giá:</h6>
+                                      <h3 th:text="${product.price}"></h3>
+                                  </div>
+
+                                  <!-- Quantity -->
+                                  <div class="mt-4">
+                                      <h6 class="font-14">Số lượng</h6>
+                                      <div class="d-flex">
+                                          <input
+                                                  type="number"
+                                                  min="1"
+                                                  class="form-control"
+                                                  placeholder="Qty"
+                                                  style="width: 90px"
+                                                  th:field="*{quantity}"
+                                          />
+                                          <input
+                                                  type="text"
+                                                  class="form-control d-none"
+                                                  style="width: 90px"
+                                                  name="id.product.id"
+                                                  th:value="${product.id}"
+                                          />
+                                          <button
+                                                  type="submit"
+                                                  class="btn btn-danger ml-2"
+                                          >
+                                              <i class="mdi mdi-cart mr-1"></i> Add to cart
+                                          </button>
+                                          <button type="button" class="btn btn-danger ml-2">
+                                              <i class="mdi mdi-square-edit-outline mr-1"></i> Buy
+                                          </button>
+                                      </div>
+                                  </div>
+
+                                  <!-- Product description -->
+                                  <div class="mt-4">
+                                      <h6 class="font-14">Mô tả sản phẩm:</h6>
+                                      <p th:text="${product.description}"></p>
+                                  </div>
+
+                                  <!-- Product information -->
+                                  <div class="mt-4">
+                                      <div class="row">
+                                          <div class="col-md-4">
+                                              <h6 class="font-14">Available Stock:</h6>
+                                              <p class="text-sm lh-150" th:text="${product.quantity}"></p>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </form>
+                          </div>
+                          <!-- end col -->
+                      </div>
+                      <!-- end row-->
+                      <!-- end table-responsive-->
+                  </div>
+                  <!-- end card-body-->
+              </div>
+              <!-- end card-->
+          </div>
+          <!-- end col-->
+      </div>
+  </th:block>
+</body>
+</html>

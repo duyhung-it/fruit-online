@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:fragment="thanh-toan">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+
+                <h4 class="page-title">Thanh toán</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Checkout Steps -->
+                    <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+                        <li class="nav-item">
+                            <a href="#billing-information" data-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
+                                <i class="mdi mdi-account-circle font-18"></i>
+                                <span class="d-none d-lg-block">Billing Info</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+
+                    <!-- Steps Information -->
+                    <div class="tab-content" data-select2-id="12">
+
+                        <!-- Billing Content-->
+                        <div class="tab-pane show active" id="billing-information" data-select2-id="billing-information">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h4 class="mt-2">Thông tin đơn hàng</h4>
+
+                                    <p class="text-muted mb-4">Fill the form below in order to
+                                        send you the order's invoice.</p>
+
+                                    <form data-select2-id="11">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="billing-last-name">Họ và tên</label>
+                                                    <input class="form-control" type="text" placeholder="Enter your name" id="billing-last-name" th:value="${user.name}">
+                                                </div>
+                                            </div>
+                                        </div> <!-- end row -->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="billing-email-address">Email Address <span class="text-danger">*</span></label>
+                                                    <input class="form-control" type="email" placeholder="Enter your email" id="billing-email-address" th:value="${user.email}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="billing-phone">Phone <span class="text-danger">*</span></label>
+                                                    <input class="form-control" type="text" placeholder="(xx) xxx xxxx xxx" id="billing-phone" th:value="${user.phone}">
+                                                </div>
+                                            </div>
+                                        </div> <!-- end row -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="billing-address">Address</label>
+                                                    <input class="form-control" type="text" placeholder="Enter full address" id="billing-address" th:value="${user.address}">
+                                                </div>
+                                            </div>
+                                        </div> <!-- end row -->
+                                        <!-- end row -->
+                                        <!-- end row -->
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group mt-3">
+                                                    <label for="example-textarea">Order Notes:</label>
+                                                    <textarea class="form-control" id="example-textarea" rows="3" placeholder="Write some note.."></textarea>
+                                                </div>
+                                            </div>
+                                        </div> <!-- end row -->
+
+                                        <div class="row mt-4">
+                                            <div class="col-sm-6">
+                                                <a th:href="@{/gio-hang}" class="btn text-muted d-none d-sm-inline-block btn-link font-weight-semibold">
+                                                    <i class="mdi mdi-arrow-left"></i> Back to Shopping Cart </a>
+                                            </div> <!-- end col -->
+                                            <div class="col-sm-6">
+                                                <div class="text-sm-right">
+                                                    <a th:href="@{/gio-hang/checkout}" class="btn btn-danger">
+                                                        <i class="mdi mdi-truck-fast mr-1"></i> Proceed to Shipping </a>
+                                                </div>
+                                            </div> <!-- end col -->
+                                        </div> <!-- end row -->
+                                    </form>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="border p-3 mt-4 mt-lg-0 rounded">
+                                        <h4 class="header-title mb-3">Order Summary</h4>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-centered mb-0">
+                                                <tbody>
+                                                <tr th:each="cartDetails : ${cart.cartDetails}" th:object="${cartDetails}">
+                                                    <td>
+                                                        <img th:src="@{'/image/' + *{id.product.image}}" alt="contact-img" title="contact-img" class="rounded mr-2" height="48">
+                                                        <p class="m-0 d-inline-block align-middle">
+                                                            <a th:href="@{/san-pham/chi-tiet(id=*{id.product.id})}" class="text-body font-weight-semibold">Amazing Modern Chair</a>
+                                                            <br>
+                                                            <small th:text="*{quantity + 'x' + #numbers.formatCurrency(id.product.price)}">5 x $148.66</small>
+                                                        </p>
+                                                    </td>
+                                                    <td class="text-right" th:text="*{#numbers.formatCurrency(quantity * id.product.price)}">
+                                                        $743.30
+                                                    </td>
+                                                </tr>
+
+
+
+                                                <tr class="text-right">
+                                                    <td>
+                                                        <h6 class="m-0">Shipping:</h6>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        FREE
+                                                    </td>
+                                                </tr>
+                                                <tr class="text-right">
+                                                    <td>
+                                                        <h5 class="m-0">Total:</h5>
+                                                    </td>
+                                                    <td class="text-right font-weight-semibold" th:text="${#numbers.formatCurrency(grandTotal)}">
+                                                        $1071.29
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- end table-responsive -->
+                                    </div> <!-- end .border-->
+                                </div> <!-- end col -->
+                            </div> <!-- end row-->
+                        </div>
+                    </div> <!-- end tab content-->
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+    </div>
+    <!-- end row-->
+</th:block>
+</body>
+</html>

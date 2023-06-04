@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ve" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container-fluid" th:fragment="form-categories">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">Category</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form th:object="${category}" method="post" th:action="@{/admin/categories/save}">
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">Mã</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{code}">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('code')}" th:text="${err}" class="text-danger" />
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">Tên</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{name}">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('name')}" th:text="${err}" class="text-danger" />
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control d-none" name="id" th:value="*{id}">
+                        <button type="submit" class="btn btn-dark" th:text="${button}"></button>
+                    </form>
+                </div>
+                <!-- end card-body-->
+            </div>
+            <!-- end card-->
+        </div>
+        <!-- end col -->
+    </div>
+    <!-- end row -->
+</div>
+</body>
+</html>

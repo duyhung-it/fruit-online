@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container-fluid" th:fragment="form-products">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">Product</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/admin/products/save}" th:object="${product}" enctype="multipart/form-data" method="post">
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">Mã</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{code}">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('code')}" th:text="${err}" class="text-danger" />
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">Tên</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{name}">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('name')}" th:text="${err}"  class="text-danger" />
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">Giá</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" th:field="*{price}">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('price')}" th:text="${err}"  class="text-danger" />
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">Số lượng</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" th:field="*{quantity}">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('quantity')}" th:text="${err}"  class="text-danger" />
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">Mô tả</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{description}">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('description')}" th:text="${err}"  class="text-danger" />
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">Category</label>
+                            <div class="col-sm-10">
+                            <select class="form-select" aria-label="Default select example" th:field="*{category.id}">
+                                <option selected value="">Open this select menu</option>
+                                <option th:each="category : ${listCategories}" th:value="${category.id}" th:text="${category.name}"></option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">Image</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" name="file" onchange="uploadImage(this)"></input>
+                                <input type="text" class="form-control d-none" th:field="*{image}"></input>
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('image')}" th:text="${err}"  class="text-danger" />
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control d-none" name="id" th:value="*{id}">
+                        <button type="submit" class="btn btn-dark" th:text="${button}"></button>
+                    </form>
+                </div>
+                <!-- end card-body-->
+            </div>
+            <!-- end card-->
+        </div>
+        <!-- end col -->
+    </div>
+    <!-- end row -->
+</div>
+</body>
+</html>
