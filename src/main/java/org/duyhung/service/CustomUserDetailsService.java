@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+        Optional<User> optionalUser = userRepository.findByEmailAndEnabledIsTrue(email);
         if(optionalUser.isEmpty()) throw new UsernameNotFoundException("No user found");
         User user = optionalUser.get();
 
@@ -41,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 true,
-                getAuthorities(List.of(user.isRole()))
+                getAuthorities(List.of(user.getRole()))
         );
     }
     private Collection<? extends GrantedAuthority> getAuthorities(List<Boolean> roles) {

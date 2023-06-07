@@ -40,7 +40,7 @@ public class AuthController {
             return "pages/authentication/login";
         }
         session.setAttribute("user",user);
-        if(user.isRole()){
+        if(user.getRole()){
             return "redirect:/admin";
         }
         return "redirect:/trang-chu";

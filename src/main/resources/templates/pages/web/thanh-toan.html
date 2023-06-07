@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layout-web :: layout-web(~{::title},~{::main})}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Thanh toán</title>
 </head>
 <body>
-<th:block th:fragment="thanh-toan">
-
+<main class="container-fluid">
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
@@ -157,6 +157,6 @@
         </div> <!-- end col -->
     </div>
     <!-- end row-->
-</th:block>
+</main>
 </body>
 </html>

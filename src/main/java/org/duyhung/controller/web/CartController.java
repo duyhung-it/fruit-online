@@ -35,7 +35,6 @@ public class CartController {
     @GetMapping("/gio-hang")
     public String getCartPage(Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            model.addAttribute("content", "gio-hang");
             User user = userService.getUserByEmail(authentication.getName());
             Cart cart = cartService.getCartsByUser(user);
             if (cart != null) {
@@ -49,7 +48,7 @@ public class CartController {
             Double grandTotal = cartDetailService.getGrandTotal(cart);
             model.addAttribute("grandTotal", grandTotal);
             model.addAttribute("cart", cart);
-            return "pages/web/index";
+            return "pages/web/gio-hang";
         }
         return "redirect:/login";
     }
@@ -57,7 +56,6 @@ public class CartController {
     @GetMapping("/gio-hang/thanh-toan")
     public String getCartCheckoutPage(Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            model.addAttribute("content", "thanh-toan");
             User user = userService.getUserByEmail(authentication.getName());
             Cart cart = cartService.getCartsByUser(user);
             if (cart.getCartDetails().isEmpty()) {
@@ -67,7 +65,7 @@ public class CartController {
             model.addAttribute("grandTotal", grandTotal);
             model.addAttribute("cart", cart);
             model.addAttribute("user", user);
-            return "pages/web/index";
+            return "pages/web/thanh-toan";
         }
         return "redirect:/login";
     }

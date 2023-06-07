@@ -3,7 +3,7 @@ $('#form-user').submit(function (e) {
     let data = {};
     let formData = $('#form-user').serializeArray();
     $.each(formData, function (i, v) {
-        data[""+v.name+""] = v.value;
+        data["" + v.name + ""] = v.value;
     });
     let id = data.id;
     if (id === "") {
@@ -12,15 +12,16 @@ $('#form-user').submit(function (e) {
         updateUser(data);
     }
 });
-$('#form-register').submit(function (e){
+$('#form-register').submit(function (e) {
     e.preventDefault();
     let data = {};
     let formData = $('#form-register').serializeArray();
     $.each(formData, function (i, v) {
-        data[""+v.name+""] = v.value;
+        data["" + v.name + ""] = v.value;
     });
     register(data);
 })
+
 function addUser(data) {
     $.ajax({
         url: '/api/admin/users',
@@ -36,29 +37,30 @@ function addUser(data) {
             // window.location.href = "/admin/users?action=list&error=system_error";
             let error = response.responseJSON;
             console.log(error);
-            if(error.code !== undefined){
+            if (error.code !== undefined) {
                 $('#error-code').text(error.code).removeClass("d-none");
-            }else {
+            } else {
                 $('#error-code').addClass("d-none");
             }
-            if(error.name !== undefined){
+            if (error.name !== undefined) {
                 $('#error-name').text(error.name).removeClass("d-none");
-            }else {
+            } else {
                 $('#error-name').addClass("d-none");
             }
-            if(error.email !== undefined){
+            if (error.email !== undefined) {
                 $('#error-email').text(error.email).removeClass("d-none");
-            }else {
+            } else {
                 $('#error-email').addClass("d-none");
             }
-            if(error.password !== undefined){
+            if (error.password !== undefined) {
                 $('#error-password').text(error.password).removeClass("d-none");
-            }else {
+            } else {
                 $('#error-password').addClass("d-none");
             }
         }
     });
 }
+
 function updateUser(data) {
     $.ajax({
         url: '/api/admin/users',
@@ -73,24 +75,24 @@ function updateUser(data) {
             // window.location.href = "/admin/users?action=list&error=system_error";
             let error = response.responseJSON;
             console.log(error);
-            if(error.code !== undefined){
+            if (error.code !== undefined) {
                 $('#error-code').text(error.code).removeClass("d-none");
-            }else {
+            } else {
                 $('#error-code').addClass("d-none");
             }
-            if(error.name !== undefined){
+            if (error.name !== undefined) {
                 $('#error-name').text(error.name).removeClass("d-none");
-            }else {
+            } else {
                 $('#error-name').addClass("d-none");
             }
-            if(error.email !== undefined){
+            if (error.email !== undefined) {
                 $('#error-email').text(error.email).removeClass("d-none");
-            }else {
+            } else {
                 $('#error-email').addClass("d-none");
             }
-            if(error.password !== undefined){
+            if (error.password !== undefined) {
                 $('#error-password').text(error.password).removeClass("d-none");
-            }else {
+            } else {
                 $('#error-password').addClass("d-none");
             }
         }
@@ -115,9 +117,10 @@ function deleteUser(id) {
         }
     });
 }
-function uploadImage(file){
+
+function uploadImage(file) {
     let formData = new FormData();
-    formData.append("file",file.files[0]);
+    formData.append("file", file.files[0]);
     $.ajax({
         url: '/api/upload',
         type: 'POST',
@@ -135,7 +138,7 @@ function uploadImage(file){
     });
 }
 
-function updateProductQuantity(productCode){
+function updateProductQuantity(productCode) {
 
     let newQuantity = $('#quantity-' + productCode).val();
     $('#form-cart-' + productCode).submit();
@@ -160,32 +163,14 @@ function updateProductQuantity(productCode){
     // }
 }
 
-
-$('.owl-carousel').owlCarousel({
-    loop:true,
-    margin:10,
-    nav:true,
-    responsive:{
-        0:{
-            items:1
-        },
-        600:{
-            items:3
-        },
-        1000:{
-            items:5
-        }
-    }
-})
-
 function register(data) {
-    if($('#password').val() !== "" && $('#password').val() !== $('#confirm-password').val()){
+    if ($('#password').val() !== "" && $('#password').val() !== $('#confirm-password').val()) {
         $('#error-confirmPassword').text("Mật khẩu nhập lại không trùng khớp").removeClass("d-none");
         $('#error-name').addClass("d-none");
         $('#error-email').addClass("d-none");
         $('#error-password').addClass("d-none");
         return;
-    }else{
+    } else {
         $('#error-confirmPassword').addClass("d-none");
     }
     $.ajax({
@@ -202,21 +187,54 @@ function register(data) {
             // window.location.href = "/admin/users?action=list&error=system_error";
             let error = response.responseJSON;
             console.log(error);
-            if(error.name !== undefined){
+            if (error.name !== undefined) {
                 $('#error-name').text(error.name).removeClass("d-none");
-            }else {
+            } else {
                 $('#error-name').addClass("d-none");
             }
-            if(error.email !== undefined){
+            if (error.email !== undefined) {
                 $('#error-email').text(error.email).removeClass("d-none");
-            }else {
+            } else {
                 $('#error-email').addClass("d-none");
             }
-            if(error.password !== undefined){
+            if (error.password !== undefined) {
                 $('#error-password').text(error.password).removeClass("d-none");
-            }else {
+            } else {
                 $('#error-password').addClass("d-none");
             }
         }
     });
 }
+
+$('#btnOrderStatus').click(function () {
+    let checked = $('input:checkbox[name="ordersChecked"]');
+    let countCheckedCheckboxes = checked.filter(':checked').length;
+    if (countCheckedCheckboxes <= 0) {
+        alert("Please select at least an orders");
+        return;
+    }
+    $('#formOderStatus').submit();
+});
+
+$('#all-order-checked').click(function () {
+    $('input:checkbox[name="ordersChecked"]').not(this).prop('checked', this.checked);
+});
+
+$(document).ready(function () {
+    $('.owl-carousel').owlCarousel({
+        loop: true,
+        margin: 10,
+        nav: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 3
+            },
+            1000: {
+                items: 5
+            }
+        }
+    })
+})

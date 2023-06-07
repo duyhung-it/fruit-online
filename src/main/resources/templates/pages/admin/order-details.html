@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layout-admin :: layout-admmin(~{::title},~{::main})}"
+>
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Order Details</title>
 </head>
 <body>
-<th:block th:fragment="order-details">
+<main class="container-fluid">
   <!-- start page title -->
   <div class="row">
     <div class="col-12">
@@ -156,6 +158,6 @@
     </div> <!-- end col -->
   </div>
   <!-- end row -->
-</th:block>
+</main>
 </body>
 </html>

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layout-admin :: layout-admmin(~{::title},~{::main})}"
+>
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Users</title>
 </head>
 <body>
-<div th:fragment="list-users" class="container-fluid">
+<main class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
@@ -37,7 +39,7 @@
                                         <option value="10">10</option>
                                         <option value="20">20</option>
                                         <option value="-1">All</option>
-                                    </select> products</label></div>
+                                    </select> users</label></div>
                                 </div>
                                 <div class="col-sm-12 col-md-6">
                                     <div id="products-datatable_filter" class="dataTables_filter"><label>Search:<input
@@ -48,7 +50,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <table class="table table-sm table-centered mb-1"
-                                           id="products-datatable" role="grid"
+                                           id="users-datatable" role="grid"
                                            aria-describedby="products-datatable_info" style="width: 1108px;">
                                         <thead class="thead-light">
                                         <tr role="row">
@@ -74,8 +76,10 @@
                                             <td th:text="*{phone}"></td>
                                             <td th:text="*{role}"></td>
                                             <td class="table-action">
-                                                <a th:href="@{/admin/users(action='update',id=*{id})}" class="action-icon"> <i
-                                                        class="mdi mdi-square-edit-outline"></i></a>
+                                                <a th:href="@{/admin/users(action='update',id=*{id})}"
+                                                   class="action-icon">
+                                                    <i
+                                                            class="mdi mdi-square-edit-outline"></i></a>
                                                 <a href="" class="action-icon" th:onclick="deleteUser([[*{id}]])"> <i
                                                         class="mdi mdi-delete"></i></a>
                                             </td>
@@ -85,11 +89,6 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12 col-md-5">
-                                    <div class="dataTables_info" id="products-datatable_info" role="status"
-                                         aria-live="polite">Showing products 11 to 12 of 12
-                                    </div>
-                                </div>
                                 <div class="col-sm-12 col-md-7">
                                     <div class="dataTables_paginate paging_simple_numbers"
                                          id="products-datatable_paginate">
@@ -100,18 +99,15 @@
                                                                                     data-dt-idx="0" tabindex="0"
                                                                                     class="page-link"><i
                                                     class="mdi mdi-chevron-left"></i></a></li>
-                                            <li class="paginate_button page-item "><a href="#"
-                                                                                      aria-controls="products-datatable"
-                                                                                      data-dt-idx="1" tabindex="0"
-                                                                                      class="page-link">1</a></li>
-                                            <li class="paginate_button page-item "><a href="#"
-                                                                                      aria-controls="products-datatable"
-                                                                                      data-dt-idx="2" tabindex="0"
-                                                                                      class="page-link">2</a></li>
-                                            <li class="paginate_button page-item active"><a href="#"
-                                                                                            aria-controls="products-datatable"
-                                                                                            data-dt-idx="3" tabindex="0"
-                                                                                            class="page-link">3</a></li>
+                                            <li class="paginate_button page-item "
+                                                th:each="i : ${#numbers.sequence(1,totalPages)}"
+                                                th:classappend="${currentPage == i ? 'active' : ''}"
+                                            >
+                                                <a class="page-link"
+                                                   th:href="@{/admin/users(action='list',page=${i})}"
+                                                   th:text="${i}"
+                                                ></a>
+                                            </li>
                                             <li class="paginate_button page-item next disabled"
                                                 id="products-datatable_next"><a href="#"
                                                                                 aria-controls="products-datatable"
@@ -127,7 +123,6 @@
                 </div> <!-- end card-body-->
             </div> <!-- end card-->
         </div> <!-- end col -->
-    </div>
-</div>
+</main>
 </body>
 </html>

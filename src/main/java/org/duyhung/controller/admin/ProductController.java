@@ -26,45 +26,42 @@ public class ProductController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/products")
+    @GetMapping("")
     public String getProductsAdminPage(Model model,@RequestParam String action,
                                        @RequestParam(required = false) String id,
                                        @RequestParam(required = false,defaultValue = "1") Integer page,
                                        @RequestParam(required = false,defaultValue = "5") Integer size){
-        String content = "";
+        String redirectPage = "pages/admin/form-products";
         if( action.equalsIgnoreCase("add")){
-            content = "form-products";
             model.addAttribute("listCategories",categoryService.getAllCategories());
             model.addAttribute("button","Add Product");
             model.addAttribute("product",new Product());
         } else if (action.equalsIgnoreCase("update")) {
-            content = "form-products";
             Product product = productService.getProductById(id);
             model.addAttribute("listCategories",categoryService.getAllCategories());
             model.addAttribute("button","Update Product");
             model.addAttribute("product",product);
         }else{
+            redirectPage = "pages/admin/list-products";
             Page<Product> pageProducts = productService.getAllProducts(PageRequest.of(page-1,size));
             List<Product> list = pageProducts.getContent();
             model.addAttribute("totalPages",pageProducts.getTotalPages());
+            model.addAttribute("currentPage",page);
             model.addAttribute("list",list);
-            content = "list-products";
         }
-        model.addAttribute("content",content);
-        return "pages/admin/index";
+        return redirectPage;
     }
 
     @PostMapping("/save")
     public String saveProduct(@Valid @ModelAttribute(name = "product") Product product, Errors errors, Model model, RedirectAttributes redirectAttributes){
         if(errors.hasErrors()){
-            model.addAttribute("content","form-products");
             model.addAttribute("listCategories",categoryService.getAllCategories());
             if(product.getId().isEmpty()){
                 model.addAttribute("button","Add Product");
             }else {
                 model.addAttribute("button","Update Product");
             }
-            return "pages/admin/index";
+            return "pages/admin/form-products";
         }
         productService.saveProduct(product);
         redirectAttributes.addAttribute("message","Product added successfully");

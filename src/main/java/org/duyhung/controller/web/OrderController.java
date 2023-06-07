@@ -26,17 +26,26 @@ public class OrderController {
 
 
     @GetMapping("/hoa-don")
-    public String getOrdersPage(Model model, @RequestParam(required = false, defaultValue = "1") Integer page,
+    public String getOrdersPage(Model model,
+                                @RequestParam(required = false, defaultValue = "1") Integer page,
                                 @RequestParam(required = false, defaultValue = "3") Integer size,
+                                @RequestParam(required = false,defaultValue = "") String status,
                                 Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             User user = userService.getUserByEmail(authentication.getName());
-            model.addAttribute("content", "hoa-don");
             Pageable pageable = PageRequest.of(page - 1, size, Sort.by("createdDate").descending());
-            Page<Order> orderPage = orderService.getAllOrdersByUserId(pageable, user);
-            model.addAttribute("list", orderPage.getContent());
-            model.addAttribute("totalPages", orderPage.getTotalPages());
-            return "pages/web/index";
+            Page<Order> orderPage = null;
+            if(status.isEmpty()){
+                orderPage = orderService.getAllOrders(pageable);
+            }else{
+                model.addAttribute("status",status);
+                orderPage = orderService.getAllOrdersByStatus(pageable,status);
+            }
+            model.addAttribute("list",orderPage.getContent());
+            model.addAttribute("totalPages",orderPage.getTotalPages());
+            model.addAttribute("currentPage",page);
+
+            return "pages/web/hoa-don";
         }
         return "redirect:/login";
     }
@@ -47,10 +56,10 @@ public class OrderController {
         if (authentication != null && authentication.isAuthenticated()) {
             User user = userService.getUserByEmail(authentication.getName());
             Order order = orderService.getOrderById(id);
-            model.addAttribute("content", "chi-tiet-hoa-don");
             model.addAttribute("order", order);
             model.addAttribute("user", user);
-            return "pages/web/index";
+            model.addAttribute("status",Integer.parseInt(order.getStatus()) * 33);
+            return "pages/web/chi-tiet-hoa-don";
         }
         return "redirect:/login";
     }

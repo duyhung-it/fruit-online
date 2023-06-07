@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layout-web :: layout-web(~{::title},~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông tin cá nhân</title>
+</head>
+<body>
+<main class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+
+                <h4 class="page-title">Thông tin cá nhân</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <form th:object="${user}" th:action="@{/thong-tin-ca-nhan}" method="post">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group mb-3 row">
+                                    <label class="col-sm-2 col-form-label">Họ và tên</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" th:field="*{name}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('name')}" th:text="${err}" class="text-danger" />
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="col-sm-2 col-form-label">Giới tính</label>
+                                    <div class="col-sm-10">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio"
+                                                   value="true" th:checked="*{gender}">
+                                            <label class="form-check-label" for="inlineRadio">Nam</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio3"
+                                                   value="false" th:checked="!*{gender}">
+                                            <label class="form-check-label" for="inlineRadio3">Nữ</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="col-sm-2 col-form-label">Ngày sinh</label>
+                                    <div class="col-sm-10">
+                                        <input type="date" class="form-control" th:field="*{dOB}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('dOB')}" th:text="${err}" class="text-danger" />
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="col-sm-2 col-form-label">Địa chỉ</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" th:field="*{address}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('address')}" th:text="${err}" class="text-danger" />
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group mb-3 row">
+                                    <label class="col-sm-2 col-form-label">Điện thoại</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" th:field="*{phone}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('phone')}" th:text="${err}" class="text-danger" />
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="col-sm-2 col-form-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" th:field="*{email}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('email')}" th:text="${err}" class="text-danger" />
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input type="text" class="form-control d-none" th:field="*{id}">
+                            <button type="submit" class="btn btn-danger col-lg-2">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div>
+
+</main>
+</body>
+</html>

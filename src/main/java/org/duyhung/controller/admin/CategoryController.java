@@ -3,8 +3,11 @@ package org.duyhung.controller.admin;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.duyhung.entity.Category;
+import org.duyhung.entity.User;
 import org.duyhung.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,25 +27,30 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/categories")
-    public String getCategoriesAdminPage(Model model,@RequestParam String action,@RequestParam(required = false) String id){
-        String content = "";
+    @GetMapping("")
+    public String getCategoriesAdminPage(Model model,
+                                         @RequestParam String action,
+                                         @RequestParam(required = false) String id,
+                                         @RequestParam(required = false,defaultValue = "1") Integer page,
+                                         @RequestParam(required = false,defaultValue = "5") Integer size
+    ){
+        String redirectPage = "pages/admin/form-categories";
         if( action.equalsIgnoreCase("add")){
-            content = "form-categories";
             model.addAttribute("button","Add Category");
             model.addAttribute("category",new Category());
         } else if (action.equalsIgnoreCase("update")) {
-            content = "form-categories";
             Category category = categoryService.getCategoryById(id);
             model.addAttribute("category",category);
             model.addAttribute("button","Update Category");
         }else{
-            List<Category> list = categoryService.getAllCategories();
-            content = "list-categories";
+            redirectPage = "pages/admin/list-categories";
+            Page<Category> categoryPage = categoryService.getAllCategories(PageRequest.of(page-1,size));
+            List<Category> list = categoryPage.getContent();
             model.addAttribute("list",list);
+            model.addAttribute("totalPages",categoryPage.getTotalPages());
+            model.addAttribute("currentPage",page);
         }
-        model.addAttribute("content",content);
-        return "pages/admin/index";
+        return redirectPage;
     }
 
     @PostMapping("/save")
@@ -54,7 +62,7 @@ public class CategoryController {
             }else {
                 model.addAttribute("button","Update");
             }
-            return "pages/admin/index";
+            return "pages/admin/form-categories";
         }
         categoryService.saveCategory(category);
         return "redirect:/admin/categories?action='list'";

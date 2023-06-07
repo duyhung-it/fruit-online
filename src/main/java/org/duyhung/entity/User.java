@@ -1,14 +1,12 @@
 package org.duyhung.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,6 +20,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
@@ -32,6 +31,7 @@ public class User implements Serializable {
     private String id;
     @NotBlank(message = "Vui long nhap ma")
     @Column(unique = true,columnDefinition = "varchar(15)")
+    @JsonProperty("#")
     private String code;
     @NotBlank(message = "Vui long nhap ten")
     @Column(columnDefinition = "nvarchar(50)")
@@ -41,7 +41,7 @@ public class User implements Serializable {
             (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dOB;
-    private boolean gender;
+    private Boolean gender;
     @Column(columnDefinition = "nvarchar(255)")
     private String address;
     private String phone;
@@ -52,9 +52,9 @@ public class User implements Serializable {
     @NotBlank(message = "Vui long nhap password")
     private String password;
     @Column(name = "role",columnDefinition = "bit")
-    private boolean role;
+    private Boolean role;
     @Column(name = "enabled",columnDefinition = "bit")
-    private boolean enabled = false;
+    private Boolean enabled;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 }

@@ -15,8 +15,8 @@ public interface OrderService {
     Page<Order> getAllOrders(Pageable pageable);
     Page<Order> getAllOrdersByUserId(Pageable pageable, User user);
     Page<Order> getAllOrdersByStatus(Pageable pageable, String status);
-
     Order getOrderById(String id);
-
+    void updateOrderStatus(String[] orderId);
     void deleteOrder(String id);
+    void cancelOrder(String id);
 }

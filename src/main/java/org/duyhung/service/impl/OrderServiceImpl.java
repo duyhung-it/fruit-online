@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -56,7 +57,32 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void updateOrderStatus(String[] orderIds) {
+        for (String id : orderIds) {
+            Order order = orderRepository.findById(id).orElse(null);
+            if(Objects.nonNull(order)){
+                if(Integer.parseInt(order.getStatus()) <=2 && Integer.parseInt(order.getStatus()) >= 0){
+                    order.setStatus(String.valueOf(Long.parseLong(order.getStatus()) + 1));
+                    if(order.getStatus().equals("3")){
+                        order.setPaidDate(LocalDate.now());
+                    }
+                    orderRepository.save(order);
+                }
+            }
+        }
+    }
+
+    @Override
     public void deleteOrder(String id) {
         orderRepository.deleteById(id);
+    }
+
+    @Override
+    public void cancelOrder(String id) {
+        Order order = orderRepository.findById(id).orElse(null);
+        if(Objects.nonNull(order)){
+            order.setStatus("0");
+            orderRepository.save(order);
+        }
     }
 }

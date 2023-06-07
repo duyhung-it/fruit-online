@@ -26,26 +26,25 @@ public class ProductController {
     public String getProductPage(Model model, @RequestParam(required = false, defaultValue = "1") Integer page,
                                  @RequestParam(required = false, defaultValue = "6") Integer size,
                                  @RequestParam(name = "category_id", required = false) String categoryId) {
-        model.addAttribute("content", "san-pham");
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Product> page1 = null;
-        if (categoryId != null) {
+        if (categoryId != null && !categoryId.isEmpty()) {
             page1 = productService.findAllByCategory_Id(categoryId, pageable);
+            model.addAttribute("categoryId",categoryId);
         } else {
             page1 = productService.getAllProducts(pageable);
         }
         model.addAttribute("listCategories", categoryService.getAllCategories());
         model.addAttribute("list", page1.getContent());
         model.addAttribute("totalPages", page1.getTotalPages());
-        return "pages/web/index";
+        return "pages/web/san-pham";
     }
 
     @GetMapping("/san-pham/chi-tiet")
     public String getProductDetailsPage(Model model, @RequestParam String id) {
-        model.addAttribute("content", "chi-tiet-san-pham");
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
         model.addAttribute("cartDetails", new CartDetail());
-        return "pages/web/index";
+        return "pages/web/chi-tiet-san-pham";
     }
 }

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layout-web :: layout-web(~{::title},~{::main})}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Sản phẩm</title>
 </head>
 <body>
-<th:block th:fragment="san-pham">
+<main class="container-fluid">
     <div class="row">
         <div class="col-sm-3">
             <nav class="navbar navbar-light topnav-menu">
@@ -25,7 +26,7 @@
                             </a>
                             <div class="collapse" id="collapseExample">
                                 <a
-                                        href="javascript: void(0);"
+                                       th:href="@{/san-pham}"
                                         class="dropdown-item"
                                 >Tất cả
                                 </a>
@@ -66,7 +67,7 @@
                         <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
                     </li>
                     <li th:each="i : ${#numbers.sequence(1,totalPages)}" class="page-item">
-                        <a class="page-link" th:href="@{/san-pham(page=${i},categoryId=${categoryId})}" th:text="${i}"></a>
+                        <a class="page-link" th:href="@{/san-pham(page=${i},category_id=${categoryId})}" th:text="${i}"></a>
                     </li>
                     <li class="page-item">
                         <a class="page-link" href="#">Next</a>
@@ -75,6 +76,6 @@
             </nav>
         </div>
     </div>
-</th:block>
+</main>
 </body>
 </html>

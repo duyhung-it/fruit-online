@@ -1,5 +1,7 @@
 package org.duyhung.service.impl;
 
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.duyhung.entity.PasswordResetToken;
 import org.duyhung.entity.User;
 import org.duyhung.entity.VerificationToken;
@@ -8,20 +10,24 @@ import org.duyhung.repository.PasswordResetTokenRepository;
 import org.duyhung.repository.UserRepository;
 import org.duyhung.repository.VerificationTokenRepository;
 import org.duyhung.service.UserService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final PasswordResetTokenRepository passwordResetTokenRepository;
-
     private final VerificationTokenRepository tokenRepository;
+    private static final Comparator<User> EMPTY_COMPARATOR = (e1, e2) -> 0;
+
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, PasswordResetTokenRepository passwordResetTokenRepository, VerificationTokenRepository tokenRepository) {
         this.userRepository = userRepository;
@@ -38,15 +44,23 @@ public class UserServiceImpl implements UserService {
         user.setUpdatedDate(LocalDateTime.now());
         return userRepository.save(user);
     }
-
+    @Transactional
     @Override
     public void deleteUser(User user) {
-        userRepository.delete(user);
+        List<VerificationToken> verificationTokens =
+                tokenRepository.findAllByUser_Id(user.getId());
+        if(!verificationTokens.isEmpty()){
+            for (VerificationToken p:
+                 verificationTokens) {
+                tokenRepository.deleteById(p.getId());
+            }
+        }
+        userRepository.deleteById(user.getId());
     }
 
     @Override
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+        return userRepository.findByEmailAndEnabledIsTrue(email).orElse(null);
     }
 
     @Override
@@ -57,6 +71,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public org.springframework.data.domain.Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override

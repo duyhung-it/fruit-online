@@ -5,10 +5,8 @@ import org.duyhung.entity.User;
 import org.duyhung.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.EntityResponse;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -30,4 +28,5 @@ public class UserController {
     public void deleteUser(@RequestBody User user){
         userService.deleteUser(user);
     }
+
 }

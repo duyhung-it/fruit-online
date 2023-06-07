@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layout-admin :: layout-admmin(~{::title},~{::main})}"
+>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Orders</title>
 </head>
 <body>
-<th:block th:fragment="list-orders">
+<main class="container-fluid">
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
@@ -29,83 +31,86 @@
                                            placeholder="Search..." disabled>
                                 </div>
                                 <div class="form-group mx-sm-3 mb-2">
-                                        <label for="status-select" class="mr-2">Status</label>
-                                        <select class="custom-select" id="status-select" name="status" onchange="{$('#form-status').submit()}">
-                                            <option selected="">Choose...</option>
-                                            <option value="1">Đang chờ</option>
-                                            <option value="2">Đang giao hàng</option>
-                                            <option value="3">Đã giao hàng</option>
-                                            <option value="0">Đã hủy</option>
-                                        </select>
+                                    <label for="status-select" class="mr-2">Status</label>
+                                    <select class="custom-select" id="status-select" name="status"
+                                            onchange="{$('#form-status').submit()}">
+                                        <option value="">Choose...</option>
+                                        <option value="1" th:selected="${status == '1'}">Đang chờ</option>
+                                        <option value="2" th:selected="${status == '2'}">Đang giao hàng</option>
+                                        <option value="3" th:selected="${status == '3'}">Đã giao hàng</option>
+                                        <option value="0" th:selected="${status == '0'}">Đã hủy</option>
+                                    </select>
                                 </div>
                             </form>
+                        </div>
+                        <div class="col-lg-2">
+                            <button class="btn btn-danger" id="btnOrderStatus">Update Status</button>
                         </div>
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-centered mb-0">
-                            <thead class="thead-light">
-                            <tr>
-                                <th style="width: 20px;">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="all-order-checked">
-                                        <label class="custom-control-label" for="all-order-checked">&nbsp;</label>
-                                    </div>
-                                </th>
-                                <th>Sản phẩm</th>
-                                <th>Ngày</th>
-                                <th>Tổng</th>
-                                <th>Trạng thái</th>
-                                <th style="width: 125px;">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="order : ${list}" th:object="${order}">
-                                <td>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="order-checked" th:id="*{code}">
-                                        <label class="custom-control-label" th:for="*{code}">&nbsp;</label>
-                                    </div>
-                                </td>
-                                <td th:object="${order.orderDetails.get(0)}">
-                                    <a th:href="@{/orders/detail(id=${order.id})}">
-                                        <img th:src="@{'/image/' + *{id.product.image}}" alt="contact-img"
-                                             title="contact-img" class="rounded mr-3" height="48">
-                                        <p class="m-0 d-inline-block align-middle font-16">
-                                            <span class="text-body" th:text="*{id.product.name}">Adirondack Chair</span>
+                        <form th:action="@{/admin/orders/update/status}" id="formOderStatus" method="post">
+                            <table class="table table-centered mb-0">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 20px;">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="form-check-input" id="all-order-checked">
+                                        </div>
+                                    </th>
+                                    <th>Sản phẩm</th>
+                                    <th>Ngày</th>
+                                    <th>Tổng</th>
+                                    <th>Trạng thái</th>
+                                    <th style="width: 125px;">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="order : ${list}" th:object="${order}">
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="form-check-input" name="ordersChecked"
+                                                   th:id="*{code}" th:value="*{id}">
+                                        </div>
+                                    </td>
+                                    <td th:object="${order.orderDetails.get(0)}">
+                                        <a th:href="@{/orders/detail(id=${order.id})}">
+                                            <img th:src="@{'/image/' + *{id.product.image}}" alt="contact-img"
+                                                 title="contact-img" class="rounded mr-3" height="48">
+                                            <p class="m-0 d-inline-block align-middle font-16">
+                                                <span class="text-body"
+                                                      th:text="*{id.product.name}">Adirondack Chair</span>
+                                                <br>
+                                                <span class="text-body"
+                                                      th:text="*{quantity + 'x' + #numbers.formatCurrency(price)}"></span>
+                                            </p>
                                             <br>
-                                            <span class="text-body"
-                                                  th:text="*{quantity + 'x' + #numbers.formatCurrency(price)}"></span>
-                                        </p>
-                                        <br>
-                                        <small>
+                                            <small>
                                             <span class="text-secondary font-weight-bold"
                                                   th:if="${order.orderDetails.size() > 1}">Xem thêm sản phẩm</span>
-                                        </small>
-                                    </a>
-                                </td>
-                                <td th:text="*{createdDate}">
-                                    August 05 2018 <small class="text-muted">10:29 PM</small>
-                                </td>
-                                <td th:text="*{#numbers.formatCurrency(totalPrice)}">
-                                    $176.41
-                                </td>
-                                <td th:switch="*{status}">
-                                    <h5><span class="badge badge-info-lighten" th:case="1">Đang chờ</span></h5>
-                                    <h5><span class="badge badge-warning-lighten" th:case="2">Đang giao</span></h5>
-                                    <h5><span class="badge badge-success-lighten" th:case="3">Đã giao</span></h5>
-                                    <h5><span class="badge badge-danger-lighten" th:case="0">Đã hủy</span></h5>
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
-                                    <a href="javascript:void(0);" class="action-icon"> <i
-                                            class="mdi mdi-square-edit-outline"></i></a>
-                                    <a href="javascript:void(0);" class="action-icon"> <i
-                                            class="mdi mdi-delete"></i></a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                            </small>
+                                        </a>
+                                    </td>
+                                    <td th:text="*{createdDate}">
+                                        August 05 2018 <small class="text-muted">10:29 PM</small>
+                                    </td>
+                                    <td th:text="*{#numbers.formatCurrency(totalPrice)}">
+                                        $176.41
+                                    </td>
+                                    <td th:switch="*{status}">
+                                        <h5><span class="badge badge-info-lighten" th:case="1">Đang chờ</span></h5>
+                                        <h5><span class="badge badge-warning-lighten" th:case="2">Đang giao</span></h5>
+                                        <h5><span class="badge badge-success-lighten" th:case="3">Đã giao</span></h5>
+                                        <h5><span class="badge badge-danger-lighten" th:case="0">Đã hủy</span></h5>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/admin/orders/cancel(id=*{id})}" class="action-icon"> <i
+                                                class="mdi mdi-delete"></i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
                 </div> <!-- end card-body-->
             </div> <!-- end card-->
@@ -122,7 +127,10 @@
                                                             data-dt-idx="0" tabindex="0"
                                                             class="page-link"><i
                             class="mdi mdi-chevron-left"></i></a></li>
-                    <li class="paginate_button page-item " th:each="i : ${#numbers.sequence(1,totalPages)}">
+                    <li class="paginate_button page-item "
+                        th:each="i : ${#numbers.sequence(1,totalPages)}"
+                        th:classappend="${currentPage == i ? 'active' : ''}"
+                    >
                         <a class="page-link" th:href="@{/admin/orders(page=${i},status=${status})}" th:text="${i}"></a>
                     </li>
                     <li class="paginate_button page-item next disabled"
@@ -136,6 +144,6 @@
         </div>
     </div>
     <!-- end row -->
-</th:block>
+</main>
 </body>
 </html>

@@ -4,6 +4,8 @@ import org.duyhung.entity.PasswordResetToken;
 import org.duyhung.entity.User;
 import org.duyhung.entity.VerificationToken;
 import org.duyhung.model.RegisterModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,13 +16,13 @@ public interface UserService {
     boolean checkUserPassword(String password, String password1);
 
     List<User> getAllUsers();
+    Page<User> getAllUsers(Pageable pageable);
 
     User getUserById(String id);
 
     User saveUser(User user);
 
     void deleteUser(User user);
-
     void saveVerificationTokenForUser(String token, User user);
     User registerUser(RegisterModel userModel);
     String validateVerificationToken(String token);

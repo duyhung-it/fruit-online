@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layout-web :: layout-web(~{::title},~{::main})}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Hóa đơn</title>
 </head>
 <body>
-<th:block th:fragment="hoa-don">
+<main class="container-fluid">
 
     <!-- start page title -->
     <div class="row">
@@ -24,19 +25,21 @@
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-lg-8">
-                            <form class="form-inline">
+                            <form class="form-inline" th:action="@{/hoa-don}" method="get" id="form-status">
                                 <div class="form-group mb-2">
                                     <label for="inputPassword2" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" id="inputPassword2" placeholder="Search...">
+                                    <input type="search" class="form-control" id="inputPassword2"
+                                           placeholder="Search..." disabled>
                                 </div>
                                 <div class="form-group mx-sm-3 mb-2">
-                                    <label for="status-select" class="mr-2">Status</label>
-                                    <select class="custom-select" id="status-select">
-                                        <option selected="">Choose...</option>
-                                        <option value="1">Đang chờ</option>
-                                        <option value="2">Đang giao hàng</option>
-                                        <option value="3">Đã giao hàng</option>
-                                        <option value="0">Đã hủy</option>
+                                    <label for="status-select" class="mr-2">Trạng thái</label>
+                                    <select class="custom-select" id="status-select" name="status"
+                                            onchange="{$('#form-status').submit()}">
+                                        <option value="">Tât cả hóa đơn</option>
+                                        <option value="1" th:selected="${status == '1'}">Đang chờ</option>
+                                        <option value="2" th:selected="${status == '2'}">Đang giao hàng</option>
+                                        <option value="3" th:selected="${status == '3'}">Đã giao hàng</option>
+                                        <option value="0" th:selected="${status == '0'}">Đã hủy</option>
                                     </select>
                                 </div>
                             </form>
@@ -133,6 +136,6 @@
     </div>
     <!-- end row -->
 
-</th:block>
+</main>
 </body>
 </html>

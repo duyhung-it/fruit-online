@@ -37,7 +37,6 @@ public class HomeController {
                            HttpSession session,
                            Authentication authentication
     ) {
-        model.addAttribute("content", "trang-chu");
         Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC, "createdDate");
         Page<Product> page1 = productService.getAllProducts(pageable);
         model.addAttribute("list", page1.getContent());
@@ -51,7 +50,7 @@ public class HomeController {
                     session.setAttribute("cartProducts", cart.getCartDetails().size());
             }
         }
-        return "pages/web/index";
+        return "pages/web/trang-chu";
     }
 
 }
