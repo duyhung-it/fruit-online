@@ -85,4 +85,19 @@ public class OrderServiceImpl implements OrderService {
             orderRepository.save(order);
         }
     }
+
+    @Override
+    public Integer countOrder() {
+        return (int) orderRepository.count();
+    }
+
+    @Override
+    public Long getRevenueInMonth(LocalDate startDate, LocalDate endDate) {
+        return orderRepository.getRevenueInMonth(startDate,endDate);
+    }
+
+    @Override
+    public Long getRevenueInMonth(int month, int year) {
+        return orderRepository.getRevenueInMonth(month,year);
+    }
 }

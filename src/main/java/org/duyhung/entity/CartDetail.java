@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -20,6 +23,7 @@ import java.util.Objects;
 public class CartDetail implements Serializable {
     @EmbeddedId
     private CartDetailId id = new CartDetailId();
+    @Min(value = 1,message = "Số lượng phải >=1")
     private Long quantity;
     @Override
     public boolean equals(Object o) {

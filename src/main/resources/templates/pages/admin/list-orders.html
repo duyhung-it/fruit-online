@@ -48,7 +48,7 @@
                         </div>
                     </div>
 
-                    <div class="table-responsive">
+                    <div class="">
                         <form th:action="@{/admin/orders/update/status}" id="formOderStatus" method="post">
                             <table class="table table-centered mb-0">
                                 <thead class="thead-light">
@@ -74,7 +74,7 @@
                                         </div>
                                     </td>
                                     <td th:object="${order.orderDetails.get(0)}">
-                                        <a th:href="@{/orders/detail(id=${order.id})}">
+                                        <a th:href="@{/admin/orders/detail(id=${order.id})}">
                                             <img th:src="@{'/image/' + *{id.product.image}}" alt="contact-img"
                                                  title="contact-img" class="rounded mr-3" height="48">
                                             <p class="m-0 d-inline-block align-middle font-16">

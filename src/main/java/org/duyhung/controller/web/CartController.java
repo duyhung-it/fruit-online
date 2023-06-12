@@ -1,14 +1,13 @@
 package org.duyhung.controller.web;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.duyhung.entity.*;
-import org.duyhung.service.CartDetailService;
-import org.duyhung.service.CartService;
-import org.duyhung.service.OrderService;
-import org.duyhung.service.UserService;
+import org.duyhung.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,12 +23,14 @@ public class CartController {
     private final CartService cartService;
     private final OrderService orderService;
     private final CartDetailService cartDetailService;
+    private final ProductService productService;
 
-    public CartController(UserService userService, CartService cartService, OrderService orderService, CartDetailService cartDetailService) {
+    public CartController(UserService userService, CartService cartService, OrderService orderService, CartDetailService cartDetailService, ProductService productService) {
         this.userService = userService;
         this.cartService = cartService;
         this.orderService = orderService;
         this.cartDetailService = cartDetailService;
+        this.productService = productService;
     }
 
     @GetMapping("/gio-hang")
@@ -71,7 +72,15 @@ public class CartController {
     }
 
     @PostMapping("/gio-hang")
-    public String addProductToCart(@ModelAttribute(name = "cartDetails") CartDetail cartDetail, Authentication authentication, HttpSession session) {
+    public String addProductToCart(@Valid @ModelAttribute(name = "cartDetails") CartDetail cartDetail, Errors errors,
+                                   Authentication authentication,
+                                   HttpSession session,
+                                   RedirectAttributes redirectAttributes) {
+        if(errors.hasErrors()){
+            String id = cartDetail.getId().getProduct().getId();
+            redirectAttributes.addAttribute("id",id);
+            return "redirect:/san-pham/chi-tiet";
+        }
         if (authentication != null && authentication.isAuthenticated()) {
             User user = userService.getUserByEmail(authentication.getName());
             Cart cart = cartService.getCartsByUser(user);
@@ -93,7 +102,11 @@ public class CartController {
     @PostMapping("/gio-hang/update")
     public String updateCart(@ModelAttribute(name = "cartDetails") CartDetail cartDetails, RedirectAttributes attribute) {
         if (cartDetails != null) {
-            cartDetailService.saveCartDetail(cartDetails);
+            if(cartDetails.getQuantity() == 0){
+                cartDetailService.deleteCartDetail(cartDetails.getId());
+            }else{
+                cartDetailService.saveCartDetail(cartDetails);
+            }
             return "redirect:/gio-hang";
         }
         attribute.addAttribute("message", "failed");

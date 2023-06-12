@@ -7,11 +7,13 @@ import org.duyhung.model.RegisterModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
     User getUserByEmail(String email);
+    User getUserByCode(String code);
 
     boolean checkUserPassword(String password, String password1);
 
@@ -32,4 +34,5 @@ public interface UserService {
     Optional<User> getUserByPasswordResetToken(String token);
     void changePassword(User user, String newPassword);
     boolean checkIfValidOldPassword(User user, String oldPassword);
+    Integer countUserByRoleIsFalse();
 }

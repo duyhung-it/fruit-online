@@ -38,5 +38,8 @@ class ProductRepositoryTest {
     public void findByCategory(){
         productRepository.findAllByCategory_Id("8BCD4F31-4A88-4F2B-896C-7BFEE158E160", PageRequest.of(0,5));
     }
-
+    @Test
+    public void findTopProduct(){
+        productRepository.findTopProduct(PageRequest.of(0,3)).forEach(System.out::println);
+    }
 }

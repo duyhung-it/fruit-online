@@ -39,7 +39,9 @@ public class UserServiceImpl implements UserService {
         if(user.getId().isBlank()){
             user.setId(null);
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(!user.getPassword().contains("$2a")){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         user.setCreatedDate(LocalDateTime.now());
         user.setUpdatedDate(LocalDateTime.now());
         return userRepository.save(user);
@@ -61,6 +63,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByEmail(String email) {
         return userRepository.findByEmailAndEnabledIsTrue(email).orElse(null);
+    }
+
+    @Override
+    public User getUserByCode(String code) {
+        return userRepository.findByCode(code);
     }
 
     @Override
@@ -90,7 +97,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(registerModel.getEmail());
         user.setName(registerModel.getName());
         user.setPassword(passwordEncoder.encode(registerModel.getPassword()));
+        user.setGender(registerModel.getGender());
         user.setRole(false);
+        user.setEnabled(false);
         return userRepository.save(user);
     }
 
@@ -162,5 +171,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkIfValidOldPassword(User user, String oldPassword) {
         return passwordEncoder.matches(oldPassword,user.getPassword());
+    }
+
+    @Override
+    public Integer countUserByRoleIsFalse() {
+        return userRepository.countUserByRoleIsFalse();
     }
 }

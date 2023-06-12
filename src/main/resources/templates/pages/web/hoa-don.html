@@ -3,7 +3,7 @@
       th:replace="~{layout/layout-web :: layout-web(~{::title},~{::main})}">
 <head>
     <meta charset="UTF-8">
-    <title>Hóa đơn</title>
+    <title>[[#{app.title.order}]]</title>
 </head>
 <body>
 <main class="container-fluid">
@@ -13,7 +13,7 @@
         <div class="col-12">
             <div class="page-title-box">
 
-                <h4 class="page-title">Đơn mua</h4>
+                <h4 class="page-title">[[#{app.title.order}]]</h4>
             </div>
         </div>
     </div>
@@ -32,14 +32,14 @@
                                            placeholder="Search..." disabled>
                                 </div>
                                 <div class="form-group mx-sm-3 mb-2">
-                                    <label for="status-select" class="mr-2">Trạng thái</label>
+                                    <label for="status-select" class="mr-2">[[#{app.order.status}]]</label>
                                     <select class="custom-select" id="status-select" name="status"
                                             onchange="{$('#form-status').submit()}">
-                                        <option value="">Tât cả hóa đơn</option>
-                                        <option value="1" th:selected="${status == '1'}">Đang chờ</option>
-                                        <option value="2" th:selected="${status == '2'}">Đang giao hàng</option>
-                                        <option value="3" th:selected="${status == '3'}">Đã giao hàng</option>
-                                        <option value="0" th:selected="${status == '0'}">Đã hủy</option>
+                                        <option value="">[[#{app.order.status.all}]]</option>
+                                        <option value="1" th:selected="${status == '1'}">[[#{app.order.status.packed}]]</option>
+                                        <option value="2" th:selected="${status == '2'}">[[#{app.order.status.s}]]</option>
+                                        <option value="3" th:selected="${status == '3'}">[[#{app.order.status.delivered}]]</option>
+                                        <option value="0" th:selected="${status == '0'}">[[#{app.order.status.canceled}]]</option>
                                     </select>
                                 </div>
                             </form>

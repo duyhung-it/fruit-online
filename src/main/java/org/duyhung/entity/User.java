@@ -31,7 +31,6 @@ public class User implements Serializable {
     private String id;
     @NotBlank(message = "Vui long nhap ma")
     @Column(unique = true,columnDefinition = "varchar(15)")
-    @JsonProperty("#")
     private String code;
     @NotBlank(message = "Vui long nhap ten")
     @Column(columnDefinition = "nvarchar(50)")

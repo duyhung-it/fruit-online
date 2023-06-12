@@ -3,7 +3,7 @@
       th:replace="~{layout/layout-web :: layout-web(~{::title},~{::main})}">
 <head>
     <meta charset="UTF-8">
-    <title>Sản phẩm</title>
+    <title th:text="#{app.menu.product}"></title>
 </head>
 <body>
 <main class="container-fluid">
@@ -21,14 +21,14 @@
                                     aria-expanded="false"
                                     aria-controls="collapseExample"
                             >
-                                <i class="uil-search mr-1"></i>Tìm kiếm danh mục
+                                <i class="uil-search mr-1"></i>[[#{app.category.filter}]]
                                 <div class="arrow-down"></div>
                             </a>
                             <div class="collapse" id="collapseExample">
                                 <a
                                        th:href="@{/san-pham}"
                                         class="dropdown-item"
-                                >Tất cả
+                                >[[#{app.category.filter.all}]]
                                 </a>
 
                                 <a th:each="category: ${listCategories}" class="dropdown-item" th:href="@{san-pham(category_id=${category.id})}" th:text="${category.name}"></a>
@@ -39,6 +39,11 @@
             </nav>
         </div>
         <div class="col-sm-9">
+            <div class="content-title row">
+                <h2>
+                    <i class="fa fa-star"></i>[[#{app.menu.product}]]
+                </h2>
+            </div>
             <div class="row">
                 <div th:each="product : ${list}" th:object="${product}"
                      class="col-lg-4 col-md-6 col-sm-12">
@@ -66,7 +71,9 @@
                     <li class="page-item disabled">
                         <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
                     </li>
-                    <li th:each="i : ${#numbers.sequence(1,totalPages)}" class="page-item">
+                    <li th:each="i : ${#numbers.sequence(1,totalPages)}" class="page-item"
+                        th:classappend="${currentPage == i ? 'active' : ''}"
+                    >
                         <a class="page-link" th:href="@{/san-pham(page=${i},category_id=${categoryId})}" th:text="${i}"></a>
                     </li>
                     <li class="page-item">

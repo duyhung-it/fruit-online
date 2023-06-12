@@ -5,6 +5,7 @@ import org.duyhung.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderService {
@@ -19,4 +20,7 @@ public interface OrderService {
     void updateOrderStatus(String[] orderId);
     void deleteOrder(String id);
     void cancelOrder(String id);
+    Integer countOrder();
+    Long getRevenueInMonth(LocalDate startDate, LocalDate endDate);
+    Long getRevenueInMonth(int month,int year);
 }

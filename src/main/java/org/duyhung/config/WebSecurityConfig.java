@@ -12,6 +12,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+    private static final String[] WHITES_LIST = {
+            "/gio-hang/**",
+            "/hoa-don/**",
+            "/thong-tin-ca-nhan",
+            "/doi-mat-khau"
+    };
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -19,7 +25,7 @@ public class WebSecurityConfig {
                 csrf().disable().cors().and().
                 authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/gio-hang/**","/hoa-don/**","/thong-tin-ca-nhan").authenticated()
+                        .requestMatchers(WHITES_LIST).authenticated()
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().permitAll()
                 )

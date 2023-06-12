@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,11 +38,12 @@ public class ProductController {
         model.addAttribute("listCategories", categoryService.getAllCategories());
         model.addAttribute("list", page1.getContent());
         model.addAttribute("totalPages", page1.getTotalPages());
+        model.addAttribute("currentPage",page);
         return "pages/web/san-pham";
     }
 
     @GetMapping("/san-pham/chi-tiet")
-    public String getProductDetailsPage(Model model, @RequestParam String id) {
+    public String getProductDetailsPage( Model model, @RequestParam String id) {
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
         model.addAttribute("cartDetails", new CartDetail());

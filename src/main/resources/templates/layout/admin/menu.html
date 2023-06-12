@@ -10,20 +10,20 @@
     <!-- LOGO -->
     <a href="#" class="logo text-center logo-light">
                     <span class="logo-lg">
-                        <img th:src="@{/assets/images/logo.png}" alt="" height="16">
+                        <img th:src="@{/assets/images/mylogo.png}" alt="" height="64">
                     </span>
         <span class="logo-sm">
-                        <img th:src="@{/assets/images/logo_sm.png}" alt="" height="16">
+                        <img th:src="@{/assets/images/mylogo.png}" alt="" height="32">
                     </span>
     </a>
 
     <!-- LOGO -->
     <a href="#" class="logo text-center logo-dark">
                     <span class="logo-lg">
-                        <img th:src="@{/assets/images/logo-dark.png}" alt="" height="16">
+                        <img th:src="@{/assets/images/mylogo.png}" alt="" height="16">
                     </span>
         <span class="logo-sm">
-                        <img th:src="@{/assets/images/logo_sm_dark.png}" alt="" height="16">
+                        <img th:src="@{/assets/images/mylogo.png}" alt="" height="16">
                     </span>
     </a>
 
@@ -43,7 +43,7 @@
                                 <li class="side-nav-title side-nav-item">Navigation</li>
 
                                 <li class="side-nav-item">
-                                    <a href="javascript: void(0);" class="side-nav-link">
+                                    <a th:href="@{/admin}" class="side-nav-link">
                                         <i class="uil-home-alt"></i>
                                         <span> Dashboards </span>
                                     </a>

@@ -31,13 +31,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> optionalUser = userRepository.findByEmailAndEnabledIsTrue(email);
-        if(optionalUser.isEmpty()) throw new UsernameNotFoundException("No user found");
+        if(optionalUser.isEmpty()) throw new UsernameNotFoundException("Unable to login. Check your username and password.");
         User user = optionalUser.get();
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                true,
+                user.getEnabled(),
                 true,
                 true,
                 true,

@@ -42,6 +42,8 @@ public class HomeController {
         model.addAttribute("list", page1.getContent());
         model.addAttribute("totalPages", page1.getTotalPages());
         model.addAttribute("listProducts", productService.getAllProducts());
+        model.addAttribute("listPopularProducts",productService.findTopProduct(PageRequest.of(0,6)));
+        model.addAttribute("currentPage",page);
         if (authentication != null && authentication.isAuthenticated()) {
             User user = userService.getUserByEmail(authentication.getName());
             Cart cart = cartService.getCartsByUser(user);

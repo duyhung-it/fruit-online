@@ -101,6 +101,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">Active</label>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="enabled" id="active" value="true" th:checked="*{enabled}">
+                                    <label class="form-check-label" for="active">Active</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="enabled" id="inactive" value="false" th:checked="!*{enabled}">
+                                    <label class="form-check-label" for="inactive">Inactive</label>
+                                </div>
+                            </div>
+                        </div>
                         <input type="text" class="form-control d-none" name="id" th:value="*{id}">
                         <button type="submit" class="btn btn-dark" th:text="${button}"></button>
                     </form>

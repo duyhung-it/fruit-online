@@ -35,6 +35,7 @@ function addUser(data) {
         },
         error: function (response) {
             // window.location.href = "/admin/users?action=list&error=system_error";
+            console.log(response);
             let error = response.responseJSON;
             console.log(error);
             if (error.code !== undefined) {
@@ -60,7 +61,6 @@ function addUser(data) {
         }
     });
 }
-
 function updateUser(data) {
     $.ajax({
         url: '/api/admin/users',
@@ -109,7 +109,7 @@ function deleteUser(id) {
         data: JSON.stringify(data),
         dataType: 'json',
         success: function (result) {
-            window.location.href = "/admin/users?action=list";
+            window.location.reload() ;
         },
         error: function (error) {
             window.location.href = "/admin/users?action=list&error=system_error";
@@ -181,7 +181,7 @@ function register(data) {
         dataType: 'json',
         success: function (response) {
             alert("Đăng ký thành công");
-            window.location.href = "/login";
+            window.location.href = "/xac-nhan?email=" + data.email;
         },
         error: function (response) {
             // window.location.href = "/admin/users?action=list&error=system_error";
@@ -219,8 +219,61 @@ $('#btnOrderStatus').click(function () {
 $('#all-order-checked').click(function () {
     $('input:checkbox[name="ordersChecked"]').not(this).prop('checked', this.checked);
 });
-
+$('#form-change-password').submit(function (e) {
+    e.preventDefault();
+    let data = {};
+    let formData = $('#form-change-password').serializeArray();
+    $.each(formData, function (i, v) {
+        data["" + v.name + ""] = v.value;
+    });
+    if(data.confirm_password !== data.newPassword && data.newPassword !== '' && data.oldPassword !== ''){
+        $('#error-confirm_password').text('Mật khẩu mới không trùng khớp').removeClass("d-none");
+        $('#error-old_password').addClass("d-none");
+        $('#error-new_password').addClass("d-none");
+        return;
+    }else {
+        $('#error-confirm_password').addClass("d-none");
+    }
+    console.log(data);
+    $.ajax({
+        url: '/changePassword',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        success: function (response) {
+            // console.log(result);
+            alert(response.responseText);
+            window.location.href = "/trang-chu";
+        },
+        error: function (response) {
+            // window.location.href = "/admin/users?action=list&error=system_error";
+            let error = response.responseJSON;
+            console.log(response);
+            if(error !== undefined){
+                if (error.oldPassword !== undefined) {
+                    $('#error-old_password').text(error.oldPassword).removeClass("d-none");
+                } else {
+                    $('#error-old_password').addClass("d-none");
+                }
+                if (error.newPassword !== undefined) {
+                    $('#error-new_password').text(error.newPassword).removeClass("d-none");
+                } else {
+                    $('#error-new_password').addClass("d-none");
+                }
+            }else {
+                $('#error-confirm_password').addClass("d-none");
+                $('#error-new_password').addClass("d-none");
+                $('#error-old_password').text(response.responseText).removeClass("d-none");
+                alert(response.responseText);
+            }
+        }
+    });
+})
+$('')
 $(document).ready(function () {
+
+
     $('.owl-carousel').owlCarousel({
         loop: true,
         margin: 10,

@@ -3,7 +3,7 @@
       th:replace="~{layout/layout-web :: layout-web(~{::title},~{::main})}">
 <head>
     <meta charset="UTF-8">
-    <title>Giỏ hàng</title>
+    <title>[[#{app.title.cart}]]</title>
 </head>
 <body>
   <main class="container-fluid">
@@ -14,10 +14,10 @@
             <a
                     class="btn btn-danger"
                     th:href="@{/hoa-don}"
-            ><i class="mdi mdi-history"></i> Đã mua</a
+            ><i class="mdi mdi-history"></i> [[#{app.user.history}]]</a
             >
           </div>
-          <h4 class="page-title">Giỏ hàng</h4>
+          <h4 class="page-title">[[#{app.title.cart}]]</h4>
         </div>
       </div>
     </div>
@@ -111,7 +111,7 @@
                               th:href="@{/gio-hang/thanh-toan}"
                               class="btn btn-danger"
                       >
-                        <i class="mdi mdi-cart-plus mr-1"></i> Checkout
+                        <i class="mdi mdi-cart-plus mr-1"></i> [[#{app.title.check-out}]]
                       </a>
                     </div>
                   </div>

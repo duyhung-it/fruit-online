@@ -3,7 +3,7 @@
       th:replace="~{layout/layout-web :: layout-web(~{::title},~{::main})}">
 <head>
     <meta charset="UTF-8">
-    <title>Đơn hàng</title>
+    <title>[[#{app.title.order.detail}]]</title>
 </head>
 <body>
 <main class="container-fluid">
@@ -12,7 +12,7 @@
     <div class="col-12">
       <div class="page-title-box">
 
-        <h4 class="page-title">Đơn mua</h4>
+        <h4 class="page-title">[[#{app.title.order.detail}]]</h4>
       </div>
     </div>
   </div>
@@ -27,13 +27,13 @@
             <span data-toggle="tooltip" data-placement="bottom" title="" data-original-title="20/08/2018 07:24 PM" aria-describedby="tooltip680955">Order Placed</span>
           </div>
           <div class="step-item" th:classappend="${order.status == '1' ? 'current' : ''}">
-            <span data-toggle="tooltip" data-placement="bottom" title="" data-original-title="21/08/2018 11:32 AM">Đang chờ</span>
+            <span data-toggle="tooltip" data-placement="bottom" title="" data-original-title="21/08/2018 11:32 AM">[[#{app.order.status.packed}]]</span>
           </div>
           <div class="step-item" th:classappend="${order.status == '2' ? 'current' : ''}">
-            <span>Đang giao hàng</span>
+            <span>[[#{app.order.status.s}]]</span>
           </div>
           <div class="step-item" th:classappend="${order.status == '3' ? 'current' : ''}">
-            <span>Đã nhận</span>
+            <span>[[#{app.order.status.delivered}]]</span>
           </div>
         </div>
 

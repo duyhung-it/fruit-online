@@ -5,10 +5,10 @@
             <!-- LOGO -->
             <a th:href="@{/trang-chu}" class="topnav-logo">
                                 <span class="topnav-logo-lg">
-                                    <img th:src="@{/assets/images/logo-light.png}" alt="" height="16">
+                                    <img th:src="@{/assets/images/mylogo1.png}" alt="" height="64">
                                 </span>
                 <span class="topnav-logo-sm">
-                                    <img th:src="@{/assets/images/logo_sm_dark.png}" alt="" height="16">
+                                    <img th:src="@{/assets/images/mylogo1.png}" alt="" height="32">
                                 </span>
             </a>
 
@@ -24,6 +24,20 @@
                             <input type="text" class="form-control" placeholder="Search ..."
                                    aria-label="Recipient's username">
                         </form>
+                    </div>
+                </li>
+                <li class="dropdown notification-list topbar-dropdown d-none d-lg-block">
+                    <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" id="topbar-languagedrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="align-middle">[[#{app.language}]]</span> <i class="mdi mdi-chevron-down align-middle"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu" aria-labelledby="topbar-languagedrop" style="">
+                        <!-- item-->
+                        <a href="?language=vi" class="dropdown-item notify-item">
+                            <img th:src="@{/assets/images/vn-flag.png}" alt="user-image" class="mr-1" height="30"> <span class="align-middle">Việt Nam</span>
+                        </a>
+                        <a href="?language=en" class="dropdown-item notify-item">
+                            <img th:src="@{/assets/images/us.jpg}" alt="user-image" class="mr-1" height="18"> <span class="align-middle">English</span>
+                        </a>
                     </div>
                 </li>
                 <li class="notification-list">
@@ -49,16 +63,35 @@
                                             <span class="account-position">Founder</span>
                                         </span>
                     </a>
-                    <ul th:if="${session.user == null}" class="nav navbar-right nav-user" id="login-block">
-                        <li>
-                            <a th:href="@{/register}" class="nav-link"><span class="uil uil-user-exclamation"></span>
-                                Đăng
-                                ký
-                            </a>
-                        </li>
-                        <li><a th:href="@{/login}" class="nav-link"><span class="uil uil-user-check"></span> Đăng
-                            nhập</a></li>
-                    </ul>
+                    <a th:if="${session.user == null}" class="nav-link dropdown-toggle nav-user arrow-none mr-0"
+                       data-toggle="dropdown" id="auth-user"
+                       href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <span class="account-user-avatar">
+                                            <img th:src="@{/assets/images/users/login.jpg}" alt="user-image"
+                                                 class="rounded-circle">
+                                        </span>
+                        <span>
+                                            <span class="account-user-name">[[#{app.user.account}]]</span>
+                                            <span class="account-position"><i class="mdi mdi-ice-cream"></i></span>
+                                        </span>
+                    </a>
+                    <div th:if="${session.user == null}"
+                         class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown"
+                         aria-labelledby="auth-user" style="">
+                        <div class=" dropdown-header noti-title">
+                            <h6 class="text-overflow m-0">Welcome!</h6>
+                        </div>
+                        <!-- item-->
+                        <a th:href="@{/login}" class="dropdown-item notify-item">
+                            <i class="mdi mdi-account-circle mr-1"></i>
+                            <span>[[#{app.user.login}]]</span>
+                        </a>
+                        <!-- item-->
+                        <a th:href="@{/register}" class="dropdown-item notify-item">
+                            <i class="mdi mdi-history mr-1"></i>
+                            <span>[[#{app.user.registration}]]</span>
+                        </a>
+                    </div>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown"
                          aria-labelledby="topbar-userdrop" style="">
                         <!-- item-->
@@ -69,22 +102,26 @@
                         <!-- item-->
                         <a th:href="@{/thong-tin-ca-nhan}" class="dropdown-item notify-item">
                             <i class="mdi mdi-account-circle mr-1"></i>
-                            <span>Thông tin tài khoản</span>
+                            <span>[[#{app.user.information}]]</span>
                         </a>
                         <!-- item-->
                         <a th:href="@{/hoa-don}" class="dropdown-item notify-item">
                             <i class="mdi mdi-history mr-1"></i>
-                            <span>Lịch sử mua hàng</span>
+                            <span>[[#{app.user.history}]]</span>
+                        </a>
+                        <!-- item-->
+                        <a th:href="@{/doi-mat-khau}" class="dropdown-item notify-item">
+                            <i class="mdi mdi-account-circle mr-1"></i>
+                            <span>Change password</span>
                         </a>
                         <!-- item-->
                         <a th:href="@{/logout}" class="dropdown-item notify-item">
                             <i class="mdi mdi-logout mr-1"></i>
-                            <span>Đăng xuất</span>
+                            <span>[[#{app.user.logout}]]</span>
                         </a>
 
                     </div>
                 </li>
-
             </ul>
             <a class="navbar-toggle" data-toggle="collapse" data-target="#topnav-menu-content">
                 <div class="lines">
@@ -96,10 +133,10 @@
             <div class="app-search dropdown">
                 <form>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search..." id="top-search">
+                        <input type="text" class="form-control" th:placeholder="#{app.search} + '...'" id="top-search">
                         <span class="mdi mdi-magnify search-icon"></span>
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">Search</button>
+                            <button class="btn btn-primary" type="submit">[[#{app.search}]]</button>
                         </div>
                     </div>
 
@@ -110,24 +147,23 @@
     <div class="topnav shadow-sm">
         <div class="container-fluid active">
             <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
-
                 <div class="collapse navbar-collapse active" id="topnav-menu-content">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown active">
                             <a class="nav-link dropdown-toggle arrow-none" th:href="@{/trang-chu}">
-                                <i class="uil-dashboard mr-1"></i>Trang chủ
+                                <i class="uil-dashboard mr-1"></i>[[#{app.menu.home}]]
                             </a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle arrow-none" th:href="@{/san-pham}"
                                aria-haspopup="true" aria-expanded="false">
-                                <i class="uil-apple mr-1"></i>Sản phẩm
+                                <i class="uil-apple mr-1"></i>[[#{app.menu.product}]]
                             </a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle arrow-none" href="#" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="uil-info-circle mr-1"></i>Giới thiệu
+                                <i class="uil-info-circle mr-1"></i>[[#{app.menu.about}]]
                             </a>
                         </li>
                     </ul>

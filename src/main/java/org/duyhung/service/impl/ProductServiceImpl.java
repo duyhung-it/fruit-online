@@ -1,16 +1,17 @@
 package org.duyhung.service.impl;
 
 import org.duyhung.entity.Product;
+import org.duyhung.model.TopSellProductModel;
 import org.duyhung.repository.ProductRepository;
 import org.duyhung.service.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -53,5 +54,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> findAllByCategory_Id(String categoryId, Pageable pageable) {
         return productRepository.findAllByCategory_Id(categoryId,pageable);
+    }
+
+    @Override
+    public List<Product> findTopProduct(Pageable pageable) {
+        List<Object[]> topSellProductModels = productRepository.findTopProduct(pageable);
+        if(Objects.nonNull(topSellProductModels)){
+            return topSellProductModels.stream().map(objects -> {
+                return productRepository.findById((String) objects[0]).orElse(new Product());
+            }).toList();
+        }
+        return null;
+    }
+    @Override
+    public List<TopSellProductModel> findTopSellProduct(Pageable pageable){
+        List<Object[]> topSellProductModels = productRepository.findTopProduct(pageable);
+        return topSellProductModels.stream().map(objects -> {
+            return new TopSellProductModel(productRepository.findById(objects[0].toString()).orElse(null),(long) objects[1]);
+        }).toList();
     }
 }

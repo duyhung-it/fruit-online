@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.function.EntityResponse;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -55,7 +56,7 @@ public class RegistrationController {
 //        ));
         return "Verification link sent";
     }
-    @PostMapping("resetPassword")
+    @PostMapping("/resetPassword")
     public String resetPassword(@RequestBody PasswordModel passwordModel, HttpServletRequest request){
         User user = userService.getUserByEmail(passwordModel.getEmail());
         String url = "";
@@ -82,14 +83,17 @@ public class RegistrationController {
 
     }
     @PostMapping("/changePassword")
-    public String changePassword(@RequestBody PasswordModel passwordModel){
+    public ResponseEntity<Object> changePassword(@Valid @RequestBody PasswordModel passwordModel,HttpStatus status){
         User user = userService.getUserByEmail(passwordModel.getEmail());
         if(!userService.checkIfValidOldPassword(user,passwordModel.getOldPassword())){
-            return "Invalid OldPassword";
+            return new ResponseEntity<>("Mật khẩu cũ không chính xác!",HttpStatus.BAD_REQUEST);
         }
         //save new password
         userService.changePassword(user,passwordModel.getNewPassword());
-        return "Password Changed Successfully";
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                "responseText","Thay đổi mật khẩu thành công",
+                "statusText","success"
+        ));
     }
     private String passwordResetTokenMail(User user, String applicationUrl,String token) {
         return applicationUrl + "/savePassword?token=" + token;

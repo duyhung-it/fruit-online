@@ -1,6 +1,7 @@
 package org.duyhung.service;
 
 import org.duyhung.entity.Product;
+import org.duyhung.model.TopSellProductModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -9,8 +10,6 @@ import java.util.List;
 
 
 public interface ProductService {
-
-
     List<Product> getAllProducts();
     Page<Product> getAllProducts(Pageable pageable);
 
@@ -20,4 +19,7 @@ public interface ProductService {
 
     void deleteProduct(String id);
     Page<Product> findAllByCategory_Id(String categoryId, Pageable pageable);
+
+    List<Product> findTopProduct(Pageable pageable);
+    List<TopSellProductModel> findTopSellProduct(Pageable pageable);
 }

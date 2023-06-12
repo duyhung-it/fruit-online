@@ -12,12 +12,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Controller("OrderAdminController")
 @RequestMapping("/admin")
@@ -75,5 +75,19 @@ public class OrderController {
             orderService.cancelOrder(orderId);
         }
         return "redirect:/admin/orders";
+    }
+    @ResponseBody
+    @GetMapping("/revenue")
+    public Long[] getRevenue(){
+        List<Long> revenues = new ArrayList<>();
+        for(int i = 1; i <=12;i++){
+            Long revenue = orderService.getRevenueInMonth(i,2023);
+            if(revenue!= null) {
+                revenues.add(revenue);
+            }else{
+                revenues.add(0L);
+            }
+        }
+        return (Long[]) revenues.toArray();
     }
 }

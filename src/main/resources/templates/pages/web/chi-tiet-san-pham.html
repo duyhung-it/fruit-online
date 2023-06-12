@@ -3,14 +3,14 @@
       th:replace="~{layout/layout-web :: layout-web(~{::title},~{::main})}">
 <head>
     <meta charset="UTF-8">
-    <title>Sản phẩm chi tiết</title>
+    <title>[[#{app.title.product.detail}]]</title>
 </head>
 <body>
   <main class="container-fluid">
       <div class="row">
           <div class="col-12">
               <div class="page-title-box">
-                  <h4 class="page-title">Product Details</h4>
+                  <h4 class="page-title">[[#{app.title.product.detail}]]</h4>
               </div>
           </div>
       </div>
@@ -70,12 +70,13 @@
                                       <div class="d-flex">
                                           <input
                                                   type="number"
-                                                  min="1"
                                                   class="form-control"
                                                   placeholder="Qty"
                                                   style="width: 90px"
-                                                  th:field="*{quantity}"
+                                                  name="quantity"
+                                                  value="1"
                                           />
+                                          <span th:if="${#fields.hasErrors('quantity')}" th:errors="${#fields.errors('quantity')}" class="text-danger"></span>
                                           <input
                                                   type="text"
                                                   class="form-control d-none"
